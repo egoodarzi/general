@@ -92,27 +92,27 @@ net.ipv4.ip_forward=1
 
 make it permanent:
 
-  sudo sysctl -p
+  	sudo sysctl -p
 
 firewall settings:
 
-  sudo iptables -A INPUT -p udp --dport 500 -j ACCEPT
-  sudo iptables -A INPUT -p udp --dport 4500 -j ACCEPT
-  sudo iptables -A INPUT -p udp --dport 1701 -j ACCEPT
+	  sudo iptables -A INPUT -p udp --dport 500 -j ACCEPT
+	  sudo iptables -A INPUT -p udp --dport 4500 -j ACCEPT
+	  sudo iptables -A INPUT -p udp --dport 1701 -j ACCEPT
 
 enable NAT for lan ip range, i route clinet range instead of natting them, clinet range is behind mikrotik:
 
-  sudo iptables -t nat -A POSTROUTING -s 192.168.23.0/24 -o eth0 -j MASQUERADE
+  	sudo iptables -t nat -A POSTROUTING -s 192.168.23.0/24 -o eth0 -j MASQUERADE
 
 restart service:
 
-	sudo systemctl restart strongswan-starter.service
-	sudo systemctl restart xl2tpd
+		sudo systemctl restart strongswan-starter.service
+		sudo systemctl restart xl2tpd
 
 to enable at boot:
 
-	sudo systemctl enable strongswan-starter.service
-	sudo systemctl enable xl2tpd
+		sudo systemctl enable strongswan-starter.service
+		sudo systemctl enable xl2tpd
 
 
 # sudo systemctl enable xl2tpd
@@ -130,14 +130,15 @@ troubleshoot:
 
 set authentication to no:
 
-  sudo nano /etc/xl2tpd/xl2tpd.conf
+  	sudo nano /etc/xl2tpd/xl2tpd.conf
 ```
 require authentication = no
 ```
 
 comment auth in ppp, it might overwrite l2tp config.
 
-  sudo nano /etc/ppp/options
+  	sudo nano /etc/ppp/options
+	
  ```
  # auth
 ```
@@ -145,20 +146,24 @@ comment auth in ppp, it might overwrite l2tp config.
 
 running on mikrotik hap lite, if ipsec is enabled, throuput is low around 10-15 mbps, because of high CPU usage, if we disable ipsec, vpn throuput increases
 
-disable ipsec:
+# disable ipsec:
 
 
-  root@Ubuntu-2404-noble-amd64-base ~ # sudo systemctl stop strongswan-starter.service 
-  root@Ubuntu-2404-noble-amd64-base ~ # sudo systemctl disable strongswan-starter.service 
+	  sudo systemctl stop strongswan-starter.service 
+	  sudo systemctl disable strongswan-starter.service 
 
 
-  sudo nano /etc/xl2tpd/xl2tpd.conf
+  		sudo nano /etc/xl2tpd/xl2tpd.conf
+	
 ```
+
 require authentication = yes                    ; * Require peer to authenticate
+
 ```
 
 
-  sudo nano  /etc/ppp/options.l2tpd 
+  	sudo nano  /etc/ppp/options.xl2tpd 
+	
 ```
 require-mschap-v2
 refuse-pap
@@ -194,7 +199,7 @@ make reverse route permanenet:
 
 1. Create the PPP hook script
 
-  sudo nano /etc/ppp/ip-up.d/99-l2tp-route
+  	sudo nano /etc/ppp/ip-up.d/99-l2tp-route
 
 2. Paste this content
 
@@ -215,5 +220,5 @@ fi
 
 3. Make it executable
 
-  sudo chmod +x /etc/ppp/ip-up.d/99-l2tp-route
+		sudo chmod +x /etc/ppp/ip-up.d/99-l2tp-route
 
