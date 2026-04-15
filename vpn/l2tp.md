@@ -96,23 +96,23 @@ make it permanent:
 
 firewall settings:
 
-	  sudo iptables -A INPUT -p udp --dport 500 -j ACCEPT
-	  sudo iptables -A INPUT -p udp --dport 4500 -j ACCEPT
-	  sudo iptables -A INPUT -p udp --dport 1701 -j ACCEPT
+	sudo iptables -A INPUT -p udp --dport 500 -j ACCEPT
+	sudo iptables -A INPUT -p udp --dport 4500 -j ACCEPT
+	sudo iptables -A INPUT -p udp --dport 1701 -j ACCEPT
 
 enable NAT for lan ip range, i route clinet range instead of natting them, clinet range is behind mikrotik:
 
-  	sudo iptables -t nat -A POSTROUTING -s 192.168.23.0/24 -o eth0 -j MASQUERADE
+	sudo iptables -t nat -A POSTROUTING -s 192.168.23.0/24 -o eth0 -j MASQUERADE
 
 restart service:
 
-		sudo systemctl restart strongswan-starter.service
-		sudo systemctl restart xl2tpd
+	sudo systemctl restart strongswan-starter.service
+	sudo systemctl restart xl2tpd
 
 to enable at boot:
 
-		sudo systemctl enable strongswan-starter.service
-		sudo systemctl enable xl2tpd
+	sudo systemctl enable strongswan-starter.service
+	sudo systemctl enable xl2tpd
 
 
 # sudo systemctl enable xl2tpd
@@ -149,11 +149,12 @@ running on mikrotik hap lite, if ipsec is enabled, throuput is low around 10-15 
 # disable ipsec:
 
 
-	  sudo systemctl stop strongswan-starter.service 
-	  sudo systemctl disable strongswan-starter.service 
+	sudo systemctl stop strongswan-starter.service 
+	sudo systemctl disable strongswan-starter.service 
 
+require quthentication
 
-  		sudo nano /etc/xl2tpd/xl2tpd.conf
+	sudo nano /etc/xl2tpd/xl2tpd.conf
 	
 ```
 
@@ -195,13 +196,14 @@ lcp-echo-failure 4
 ```
 
 
-make reverse route permanenet:
+# make reverse route permanenet:
 
 1. Create the PPP hook script
 
-  	sudo nano /etc/ppp/ip-up.d/99-l2tp-route
+		sudo nano /etc/ppp/ip-up.d/99-l2tp-route
 
-2. Paste this content
+
+3. Paste this content
 
 ```
 #!/bin/bash
