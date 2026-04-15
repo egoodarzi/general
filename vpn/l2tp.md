@@ -1,3 +1,5 @@
+local_lan(192.168.44.0/24) -> mikrotik (vpn_clinent: 10.8.0.2)-> ubuntu (vpn server: 10.8.0.1) ->internet
+
 install libraries.
 
 	sudo apt install strongswan xl2tpd ppp -y
@@ -101,8 +103,9 @@ firewall settings:
 	sudo iptables -A INPUT -p udp --dport 1701 -j ACCEPT
 
 enable NAT for lan ip range, i route clinet range instead of natting them, clinet range is behind mikrotik:
+local network behind mikrotik is 192.168.44.0/24
 
-	sudo iptables -t nat -A POSTROUTING -s 192.168.23.0/24 -o eth0 -j MASQUERADE
+	sudo iptables -t nat -A POSTROUTING -s 192.168.44.0/24 -o eth0 -j MASQUERADE
 
 restart service:
 
@@ -216,7 +219,7 @@ PEER="$5"
 
 # Only apply if the peer matches your L2TP endpoint
 if [ "$PEER" = "192.168.23.2" ]; then
-    ip route add 192.168.121.0/24 via 192.168.23.2 dev "$IFACE" 2>/dev/null
+    ip route add 192.168.44.0/24 via 192.168.23.2 dev "$IFACE" 2>/dev/null
 fi
 ```
 
